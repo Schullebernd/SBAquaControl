@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Schullebernd Aqua Control - Lichtwert-Schalter</title>
+<link rel="stylesheet" href="./css/style.css">
+<meta charset="UTF-8" />
+</head>
+<body>
+<style>
+</style>
+<h2>SBAQC - Lichtwert-Schalter festlegen</h2>
+Hier können Sie einen festen Wert für die einzelnen LED-Kanäle festlegen, testen und speichern.
+<br/>
+<br/>
+<h3></h3>
+<form method="post">
+	<table>
+	##SWITCH_CONFIG##
+	</table>
+	<br/>
+	<button type="submit">speichern</button>
+	<button type="submit">testen</button>
+</form>
+<br/>
+<br/>
+<form action="../" method="get">
+    <input type="submit" value="zurück" />
+</form>
+<br/>
+<hr/>
+<span style="color:grey;front-size:10pt;">
+Firmware Version
+##FW_VERSION##
+</span>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Schullebernd Aqua Control - LED Kanal bearbeiten</title>
+<link rel="stylesheet" href="./css/style.css">
+<meta charset="UTF-8" />
+</head>
+<body>
+<h2>LED Kanal
+##CHANNEL##
+bearbeiten
+</h2>
+Hier können Sie für den Kanal
+##CHANNEL##
+die einzelnen Zielwerte für bis zu 10 Zeiten festlegen.
+<br/>
+<br/>
+<h3>Zielwerte eingeben</h3>
+<form method="post">
+<table>
+<tr>
+	<th style="width:50px;">Ziel</th>
+	<th style="width:100px;">Zeit<br/>(hh:mm)</th>
+	<th style="width:150px;">Wert in Prozent<br/>(0 - 100)</th>
+</tr>
+##CONTENT##
+</table>
+<br/>
+<button type="submit">speichern</button>
+<br/>
+<br/>
+</form>
+<form action="../" method="get">
+    <input type="submit" value="zurück" />
+</form>
+<br/>
+<hr/>
+<span style="color:grey;front-size:10pt;">
+Firmware Version
+##FW_VERSION##
+</span>
+</body>
+</html>

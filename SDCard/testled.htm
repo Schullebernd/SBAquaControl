@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Schullebernd Aqua Control - Testmodus</title>
+<link rel="stylesheet" href="./css/style.css">
+<meta charset="UTF-8" />
+</head>
+<body>
+<style>
+</style>
+<h2>SBAQC - Testmodus</h2>
+Im Testmodus können Sie die Lichteinstellungen testen und abspeichern, um sie später für die Programmierung der Schaltzeiten zu verwenden.
+<br/>
+<br/>
+<h3>Kanalparameter eingeben</h3>
+<form method="post">
+	<input type="hidden" name="action" value="config"/>
+	<table>
+	##TEST_CONFIG##
+	</table>
+	<button type="submit">testen</button>
+</form>
+<br/>
+<h3>Testmodus ein/ausschalten</h3>
+<div>
+	<form method="post">
+		<input type="hidden" name="action" value="testmode"/>
+		Testmodus
+		##ON_OFF_BUTTON##
+	</form>
+</div>
+<br/>
+<br/>
+<form action="../" method="get">
+    <input type="submit" value="zurück" />
+</form>
+<br/>
+<hr/>
+<span style="color:grey;front-size:10pt;">
+Firmware Version
+##FW_VERSION##
+</span>
+</body>
+</html>
