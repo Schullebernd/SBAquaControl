@@ -23,23 +23,37 @@ ESP8266WebServer _Server(80);
 #endif
 
 AquaControl* _aqc;
+uint8_t mac[] = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05 };
 
 #if defined(ESP8266)
 void AquaControl::initESP8266NetworkConnection(){
 	Serial.print("Connecting to ");
 	Serial.print(_WlanConfig.SSID);
+	WiFi.persistent(false);
+	WiFi.mode(WIFI_STA);
 	if (_WlanConfig.ManualIP){
 		Serial.print(" using fixed IP ");
 		Serial.print(_WlanConfig.IP.toString());
 		WiFi.config(_WlanConfig.IP, _WlanConfig.Gateway, IPAddress(255, 255, 255, 0));
 	}
 	WiFi.begin(_WlanConfig.SSID.c_str(), _WlanConfig.PW.c_str());
-
-	while (WiFi.status() != WL_CONNECTED) {
+	uint8_t iTimeout = 20; // 10 sec should be enough for connecting to an existing wlan
+	while (WiFi.status() != WL_CONNECTED && iTimeout > 0) {
 		delay(500);
 		Serial.print(".");
+		iTimeout--;
 	}
-	Serial.println(" Done.");
+	if (iTimeout == 0) {
+		Serial.print(" Timeout. Switching to standard AP Mode. Please connect to WiFi SSID 'SBAQC_WIFI' using password 'sbaqc12345'.");
+		WiFi.softAPdisconnect();
+		WiFi.disconnect();
+		WiFi.mode(WIFI_AP);
+		WiFi.softAPConfig(IPAddress(192, 168, 0, 1), IPAddress(192, 168, 0, 1), IPAddress(255, 255, 255, 0));
+		WiFi.softAP("SBAQC_WIFI", "sbaqc12345");
+	}
+	else {
+		Serial.println(" Done.");
+	}
 	Serial.print("IP address: ");
 	Serial.println(WiFi.localIP());
 }
