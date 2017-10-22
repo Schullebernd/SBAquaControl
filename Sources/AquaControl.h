@@ -15,7 +15,7 @@ Copyright 2016
 #include "AquaControl_config.h"
 
 #define AQC_VERSION "0.4"
-#define AQC_BUILD	"0.4.002"
+#define AQC_BUILD	"0.4.003"
 
 #include <Arduino.h>
 

@@ -459,7 +459,7 @@ void AquaControl::init(){
 	Serial.println();
 	Serial.println("Schullebernd Aqua Control");
 	Serial.println("-------------------------");
-	Serial.print("(Version "); Serial.print(AQC_VERSION); Serial.println(")");
+	Serial.print("(Version "); Serial.print(AQC_BUILD); Serial.println(")");
 	Serial.println("Now starting up");
 	_aqc = this;
 	Serial.print("Initializing SD card...");
