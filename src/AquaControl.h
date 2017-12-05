@@ -33,7 +33,7 @@ Copyright 2016
 
 #if defined(USE_DS18B20_TEMP_SENSOR)
 #include <OneWire.h>
-#define DS18B20_PIN	D4 // Defiens the pin, where the data wire of the DS18B20 sensor is connected
+#define DS18B20_PIN	D4 // Defines the pin, where the data wire of the DS18B20 sensor is connected
 #endif
 
 #if defined(USE_PCA9685)
@@ -152,7 +152,7 @@ typedef struct{
 	time_t		Time;			// The time in seconds after 01.01.1970 when the value should be reached.
 }Target;
 
-#define MAX_TARGET_COUNT_PER_CHANNEL 10
+/* Defines the maximum number of supported pwm channels. This is restriced by the PCA9685 controller */
 #define PWM_CHANNELS 16
 
 class PwmChannel{
@@ -182,6 +182,8 @@ public:
 	void proceedCycle(time_t currentSecOfDay, time_t currentMilliOfSec); // the main function for each step. Here the pwm value will be calculated
 };
 
+#if defined(USE_DS18B20_TEMP_SENSOR)
+
 class TemperatureReader {
 public:
 	OneWire temp = OneWire(DS18B20_PIN);
@@ -207,6 +209,8 @@ public:
 	bool readTemperature(time_t currentSeconds);
 	bool init(time_t currentSecOfDay);
 };
+
+#endif
 
 
 class AquaControl{

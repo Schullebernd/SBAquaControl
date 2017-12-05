@@ -5,3 +5,9 @@
 /extras/SDCard/config/LEDCH_02.CFG
 /extras/SDCard/config/LEDCH_03.CFG
 /extras/SDCard/config/LEDCH_04.CFG
+/examples/AquaControlSketch/AquaControlSketch.sln
+/examples/AquaControlSketch/AquaControlSketch.vcxproj
+/examples/AquaControlSketch/AquaControlSketch.vcxproj.filters
+/examples/AquaControlSketch/.vs
+/examples/AquaControlSketch/__vm
+/examples/AquaControlSketch/Debug

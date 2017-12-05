@@ -15,4 +15,7 @@
 /* Comment this out, if you do not have a DS18B20 temerature sensor */
 #define USE_DS18B20_TEMP_SENSOR
 
+/* Defines the maximum amount of target (time/value) blocks per channel */
+#define MAX_TARGET_COUNT_PER_CHANNEL 10
+
 #endif

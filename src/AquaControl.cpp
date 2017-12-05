@@ -391,9 +391,10 @@ bool AquaControl::writeLedConfig(uint8_t pwmChannel){
 
 void AquaControl::initTimeKeeper(){
 #if defined(USE_RTC_DS3231)
+	Serial.print("Initializing RTC DS3231...");
 	long l = now();
 	do {
-		Serial.print("Initializing RTC DS3231...");
+		Serial.print(".");
 		setSyncProvider(RTC.get);   // the function to get the time from the RTC
 		if (timeStatus() != timeSet){
 			delay(500);
@@ -402,7 +403,7 @@ void AquaControl::initTimeKeeper(){
 	} while (timeStatus() != timeSet && l < 10);
 
 	if (timeStatus() != timeSet){
-		Serial.println("Failed: Unable to sync with the RTC");
+		Serial.println(" Failed: Unable to sync with the RTC");
 	}
 	else {
 		Serial.println(" Done.");
