@@ -7,7 +7,7 @@ Um das Projekt zu verwenden, lade dir das git Archiv herunter und entpacke es in
 
 Der Verdrahtungsplan liegt als Fritzing Projekt im Ordner ./extras/Circuit.
 
-#ACHTUNG
+# ACHTUNG
 Bei Verwendung der **Arduino IDE** bitte mit dem Boardmanager die **ESP8266 Version 2.2.0** installieren. Bei Verwendung der Version 2.3.0 stürtzt der Controller ab. Ich versuche bereits das Problem zu identifizieren und zu beheben.
 Bei Verwendung von **Visual Micro** (Arduino IDE für Microsoft Visual Studio) bitte die **ESP8266 Version 2.3.0** installieren. Bei Verwendung der Version 2.2.0 stürtzt der Controller ab.
 
