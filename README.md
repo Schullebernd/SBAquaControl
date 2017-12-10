@@ -17,3 +17,8 @@ ESP8266 Version | Arduino IDE | Visual Micro
 2.3.0 | funktioniert nicht | Ok
 
 Das Projekt befindet sich zur Zeit im Aufbau. Eine detailierte Beschreibung hier auf Github erfolgt in Kürze.
+
+# Änderungen
+
+## 2017-12-10 Build 0.5.001
+- Testmodus hinzugefügt: In der Weboberläche gibt es einen Testmodus. Man kann für jeden Kanal einen Wert eingeben und auf "Testmodus aktivieren" klicken. Die Steuerung stellt die Lichtkanäle anschließend auf diese Werte ein. Der Testmodus kann über die Schaltfläche "Testmodus deaktivieren" verlassen werden. Der Testmodus bleibt maximal 60 Sekunden lang aktiviert.

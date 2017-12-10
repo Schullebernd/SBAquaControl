@@ -14,8 +14,8 @@ Copyright 2016
 
 #include "AquaControl_config.h"
 
-#define AQC_VERSION "0.4"
-#define AQC_BUILD	"0.4.003"
+#define AQC_VERSION "0.5"
+#define AQC_BUILD	"0.5.001"
 
 #include <Arduino.h>
 
@@ -74,6 +74,8 @@ void handleStyleGET();
 #if defined(USE_PCA9685)
 	#define PWM_STEP 5
 	#define PWM_MAX 4095 // 12 bit PCA9685 Board
+	/* Defines the maximum number of supported pwm channels. This is restriced by the PCA9685 controller */
+	#define PWM_CHANNELS 16
 	#define PWM_CHANNEL_0	0
 	#define PWM_CHANNEL_1	1
 	#define PWM_CHANNEL_2	2
@@ -100,6 +102,8 @@ void handleStyleGET();
 	#define PWM_CHANNEL_4	10
 	#define PWM_CHANNEL_5	11
 	#if defined(__AVR_ATmega2560__)
+		/* Defines the maximum number of supported pwm channels. This is restriced by the PCA9685 controller */
+		#define PWM_CHANNELS 16
 		#define PWM_CHANNEL_6	4
 		#define PWM_CHANNEL_7	2
 		#define PWM_CHANNEL_8	7
@@ -110,15 +114,22 @@ void handleStyleGET();
 		#define PWM_CHANNEL_13	45
 		#define PWM_CHANNEL_14	46
 		#define PWM_CHANNEL_15	47
+	#else
+		/* Defines the maximum number of supported pwm channels. This is restriced by the PCA9685 controller */
+		#define PWM_CHANNELS 6
 	#endif // defined(__AVR_ATmega2560__)
 #elif defined (ESP8266)
 	#define PWM_STEP 4
 	#define PWM_MAX 1023	// ESP8266 has software PWM output with 10 bit precision
 	#define PWM_CHANNEL_0	D0
 	#define PWM_CHANNEL_1	D3
+	/* Defines the maximum number of supported pwm channels. This is restriced by the PCA9685 controller */
+	#define PWM_CHANNELS 2
 #else	// elif defined(ESP8266)
 	#define PWM_STEP 1
 	#define PWM_MAX 255		// Asume a 8 bit PWM for all other cpu types
+	/* Defines the maximum number of supported pwm channels. This is restriced by the PCA9685 controller */
+	#define PWM_CHANNELS 4
 	#define PWM_CHANNEL_0	FUNC_GPIO0
 	#define PWM_CHANNEL_1	FUNC_GPIO1
 	#define PWM_CHANNEL_2	FUNC_GPIO2
@@ -152,9 +163,6 @@ typedef struct{
 	time_t		Time;			// The time in seconds after 01.01.1970 when the value should be reached.
 }Target;
 
-/* Defines the maximum number of supported pwm channels. This is restriced by the PCA9685 controller */
-#define PWM_CHANNELS 16
-
 class PwmChannel{
 private:
 	int16_t		_PwmTarget = 0;
@@ -167,6 +175,7 @@ public:
 	uint16_t	CurrentWriteValue;
 	bool		HasToWritePwm; // Indecates, that a new pwm values has to be written to the pwm device
 	bool		TestMode;
+	time_t		TestModeSetTime;
 	uint8_t		TestValue;
 	time_t		CurrentSecOfDay;
 	time_t		CurrentMilli;

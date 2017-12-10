@@ -27,12 +27,12 @@ uint8_t mac[] = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05 };
 
 #if defined(ESP8266)
 void AquaControl::initESP8266NetworkConnection(){
-	Serial.print("Connecting to ");
+	Serial.print(F("Connecting to "));
 	Serial.print(_WlanConfig.SSID);
 	WiFi.persistent(false);
 	WiFi.mode(WIFI_STA);
 	if (_WlanConfig.ManualIP){
-		Serial.print(" using fixed IP ");
+		Serial.print(F(" using fixed IP "));
 		Serial.print(_WlanConfig.IP.toString());
 		WiFi.config(_WlanConfig.IP, _WlanConfig.Gateway, IPAddress(255, 255, 255, 0));
 	}
@@ -44,7 +44,7 @@ void AquaControl::initESP8266NetworkConnection(){
 		iTimeout--;
 	}
 	if (iTimeout == 0) {
-		Serial.print(" Timeout. Switching to standard AP Mode. Please connect to WiFi SSID 'SBAQC_WIFI' using password 'sbaqc12345'.");
+		Serial.print(F(" Timeout. Switching to standard AP Mode. Please connect to WiFi SSID 'SBAQC_WIFI' using password 'sbaqc12345'."));
 		WiFi.softAPdisconnect();
 		WiFi.disconnect();
 		WiFi.mode(WIFI_AP);
@@ -52,9 +52,9 @@ void AquaControl::initESP8266NetworkConnection(){
 		WiFi.softAP("SBAQC_WIFI", "sbaqc12345");
 	}
 	else {
-		Serial.println(" Done.");
+		Serial.println(F(" Done."));
 	}
-	Serial.print("IP address: ");
+	Serial.print(F("IP address: "));
 	Serial.println(WiFi.localIP());
 }
 
@@ -83,19 +83,19 @@ bool AquaControl::writeWlanConfig(){
 	File wlanCfg = SD.open("config/wlan.cfg");
 	if (SD.exists("config/wlan_new.cfg")){
 		if (!SD.remove("config/wlan_new.cfg")){
-			Serial.println("Error deleting old wlan_new.cfg");
+			Serial.println(F("Error deleting old wlan_new.cfg"));
 			return false;
 		}
 		else{
-			Serial.println("wlan_new.cfg deleted.");
+			Serial.println(F("wlan_new.cfg deleted."));
 		}
 	}
 	if (!wlanCfg){
-		Serial.println("Error opening config/wlan.cfg");
+		Serial.println(F("Error opening config/wlan.cfg"));
 	}
 	File wlanCfgNew = SD.open("config/wlan_new.cfg", FILE_WRITE);
 	if (!wlanCfgNew){
-		Serial.println("Error creating config/wlan_new.cfg");
+		Serial.println(F("Error creating config/wlan_new.cfg"));
 		return false;
 	}
 
@@ -114,62 +114,62 @@ bool AquaControl::writeWlanConfig(){
 			// Search for config settings
 			if (sLine.startsWith("mode")){
 				// mode setting found
-				Serial.println("Mode line found");
-				Serial.print("Old line: ");
+				Serial.println(F("Mode line found"));
+				Serial.print(F("Old line: "));
 				Serial.println(sLine);
 				Option opt;
 				opt.Key = "mode";
 				opt.Value = _WlanConfig.Mode == WlanModeClient ? "client" : "ap";
 				sLine = buildLine(opt);
-				Serial.print("New line: ");
+				Serial.print(F("New line: "));
 				Serial.println(sLine);
 			}
 			if (sLine.startsWith("ssid")){
 				// ssid setting found
-				Serial.println("SSID line found");
-				Serial.print("Old line: ");
+				Serial.println(F("SSID line found"));
+				Serial.print(F("Old line: "));
 				Serial.println(sLine);
 				Option opt;
 				opt.Key = "ssid";
 				opt.Value = _WlanConfig.SSID;
 				sLine = buildLine(opt);
-				Serial.print("New line: ");
+				Serial.print(F("New line: "));
 				Serial.println(sLine);
 			}
 			if (sLine.startsWith("pw")){
 				// password setting found
-				Serial.println("PW line found");
-				Serial.print("Old line: ");
+				Serial.println(F("PW line found"));
+				Serial.print(F("Old line: "));
 				Serial.println(sLine);
 				Option opt;
 				opt.Key = "pw";
 				opt.Value = _WlanConfig.PW;
 				sLine = buildLine(opt);
-				Serial.print("New line: ");
+				Serial.print(F("New line: "));
 				Serial.println(sLine);
 			}
 			if (sLine.startsWith("ip")){
 				// ip address setting found
-				Serial.println("IP line found");
-				Serial.print("Old line: ");
+				Serial.println(F("IP line found"));
+				Serial.print(F("Old line: "));
 				Serial.println(sLine);
 				Option opt;
 				opt.Key = "ip";
 				opt.Value = _WlanConfig.ManualIP ? _WlanConfig.IP.toString() : "auto";
 				sLine = buildLine(opt);
-				Serial.print("New line: ");
+				Serial.print(F("New line: "));
 				Serial.println(sLine);
 			}
 			if (sLine.startsWith("gateway")){
 				// ip address setting found
-				Serial.println("Gateway line found");
-				Serial.print("Old line: ");
+				Serial.println(F("Gateway line found"));
+				Serial.print(F("Old line: "));
 				Serial.println(sLine);
 				Option opt;
 				opt.Key = "gateway";
 				opt.Value = _WlanConfig.ManualIP ? _WlanConfig.Gateway.toString() : "auto";
 				sLine = buildLine(opt);
-				Serial.print("New line: ");
+				Serial.print(F("New line: "));
 				Serial.println(sLine);
 			}
 			wlanCfgNew.write((sLine + (char)13 + char(10)).c_str());
@@ -289,13 +289,13 @@ bool AquaControl::readLedConfig(){
 		// Delete the old config file for the channel
 		sPwmFilename.toCharArray(sTempName, 30);
 		if (!SD.exists(sTempName)){
-			Serial.println(String("Warning: Couldn't find config file for LED channel ") + String(i+1));
+			Serial.println(String(F("Warning: Couldn't find config file for LED channel ")) + String(i+1));
 			continue;
 		}
 		else{
 			File pwmFile = SD.open(sTempName);
 			if (!pwmFile){
-				Serial.println(String("Error: Couln't open config file for LED channel ") + String(i+1));
+				Serial.println(String(F("Error: Couln't open config file for LED channel ")) + String(i+1));
 				continue;
 			}
 			else{
@@ -359,14 +359,14 @@ bool AquaControl::writeLedConfig(uint8_t pwmChannel){
 	// Delete the old config file for the channel
 	if (SD.exists(sTempFilename)){
 		if (!SD.remove(sTempFilename)){
-			Serial.println(String("Error: Couldn't remove old config file ") + sPwmFilename);
+			Serial.println(String(F("Error: Couldn't remove old config file ")) + sPwmFilename);
 			return false;
 		}
 	}
 	// Create the new config file
 	File pwmFile = SD.open(sTempFilename, FILE_WRITE);
 	if (!pwmFile){
-		Serial.println(String("Error: Couldn't create config file ") + sPwmFilename);
+		Serial.println(String(F("Error: Couldn't create config file ")) + sPwmFilename);
 		return false;
 	}
 	// Iterate trough the targets and write them to the file
@@ -391,7 +391,7 @@ bool AquaControl::writeLedConfig(uint8_t pwmChannel){
 
 void AquaControl::initTimeKeeper(){
 #if defined(USE_RTC_DS3231)
-	Serial.print("Initializing RTC DS3231...");
+	Serial.print(F("Initializing RTC DS3231..."));
 	long l = now();
 	do {
 		Serial.print(".");
@@ -403,10 +403,10 @@ void AquaControl::initTimeKeeper(){
 	} while (timeStatus() != timeSet && l < 10);
 
 	if (timeStatus() != timeSet){
-		Serial.println(" Failed: Unable to sync with the RTC");
+		Serial.println(F(" Failed: Unable to sync with the RTC"));
 	}
 	else {
-		Serial.println(" Done.");
+		Serial.println(F(" Done."));
 	}
 #elif defined(USE_NTP)
 #error "Not yet implemented"
@@ -458,25 +458,25 @@ void AquaControl::init(){
 
 	// Init SD card device
 	Serial.println();
-	Serial.println("Schullebernd Aqua Control");
-	Serial.println("-------------------------");
-	Serial.print("(Version "); Serial.print(AQC_BUILD); Serial.println(")");
-	Serial.println("Now starting up");
+	Serial.println(F("Schullebernd Aqua Control"));
+	Serial.println(F("-------------------------"));
+	Serial.print(F("(Version ")); Serial.print(AQC_BUILD); Serial.println(F(")"));
+	Serial.println(F("Now starting up"));
 	_aqc = this;
-	Serial.print("Initializing SD card...");
+	Serial.print(F("Initializing SD card..."));
 	if (!SD.begin(SD_CS)) {
-		Serial.println(" Failed");
+		Serial.println(F(" Failed"));
 		return;
 	}
-	Serial.println(" Done.");
+	Serial.println(F(" Done."));
 
 #if defined(ESP8266)
-	Serial.print("Reading wlan config from SD card...");
+	Serial.print(F("Reading wlan config from SD card..."));
 	if (!readWlanConfig()){
-		Serial.println(" Failed");
+		Serial.println(F(" Failed"));
 		return;
 	}
-	Serial.println(" Done.");
+	Serial.println(F(" Done."));
 
 	initESP8266NetworkConnection();
 #endif
@@ -486,14 +486,14 @@ void AquaControl::init(){
 	CurrentMilli = nowMs();
 
 	// Init the pwm channels
-	Serial.print("Initializing PWM channels...");
+	Serial.print(F("Initializing PWM channels..."));
 	for (uint8_t i = 0; i < PWM_CHANNELS; i++){
 		_PwmChannels[i].ChannelAddress = getPhysicalChannelAddress(i);
 	}
 	Serial.println(" Done.");
 
 #if defined(USE_WEBSERVER)
-	Serial.print("Initializing Webserver...");
+	Serial.print(F("Initializing Webserver..."));
 	_Server = ESP8266WebServer(80);
 	_Server.on("/", handleRoot);
 	_Server.on("/editled", HTTP_GET, handleEditLedGET);
@@ -502,40 +502,40 @@ void AquaControl::init(){
 	_Server.on("/editwlan", HTTP_POST, handleEditWlanPOST);
 	_Server.on("/edittime", HTTP_GET, handleTimeGET);
 	_Server.on("/edittime", HTTP_POST, handleTimePOST);
-	_Server.on("/testled", HTTP_GET, handleTestModeGET);
-	_Server.on("/testled", HTTP_POST, handleTestModePOST);
+	_Server.on("/test", HTTP_GET, handleTestModeGET);
+	_Server.on("/test", HTTP_POST, handleTestModePOST);
 	_Server.on("/css/style.css", HTTP_GET, handleStyleGET);
 
 	_Server.onNotFound(handleNotFound);
 	_Server.begin();
-	Serial.println(" Done.");
+	Serial.println(F(" Done."));
 #else
-	Serial.println("Webserver is deactivated.");
+	Serial.println(F("Webserver is deactivated."));
 #endif
 
 #if defined(USE_PCA9685)
 	// Initialize the PCA9685 pwm / servo driver
-	Serial.print("Initializing PCA9685 module...");
+	Serial.print(F("Initializing PCA9685 module..."));
 	pwm.begin();
 	pwm.setPWMFreq(PWM_FREQ);
-	Serial.println(" Done.");
+	Serial.println(F(" Done."));
 #endif
 
-	Serial.println("Reading LED config from SD card...");
+	Serial.println(F("Reading LED config from SD card..."));
 	if (readLedConfig()){
-		Serial.println(" Done.");
+		Serial.println(F(" Done."));
 	}
 
 #if defined(USE_DS18B20_TEMP_SENSOR)
-	Serial.print("Initializing DS18B20 Temerature Sensor...");
+	Serial.print(F("Initializing DS18B20 Temerature Sensor..."));
 	if (!_Temperature.init(CurrentSecOfDay)){
-		Serial.println(" Failed");
+		Serial.println(F(" Failed"));
 	}
 	else {
-		Serial.println("Done.");
+		Serial.println(F("Done."));
 	}
 #endif
-	Serial.println("AQC booting completed.");
+	Serial.println(F("AQC booting completed."));
 }
 
 bool AquaControl::addChannelTarget(uint8_t channel, Target target){
@@ -544,9 +544,9 @@ bool AquaControl::addChannelTarget(uint8_t channel, Target target){
 	}
 	else{
 		uint8_t pos = _PwmChannels[channel].addTarget(target);
-		Serial.print("Added target at position ");
+		Serial.print(F("Added target at position "));
 		Serial.print(pos);
-		Serial.print(" of channel ");
+		Serial.print(F(" of channel "));
 		Serial.println(channel);
 	}
 }
@@ -630,9 +630,9 @@ bool TemperatureReader::readTemperature(time_t currentSeconds) {
 													  //// default is 12 bit resolution, 750 ms conversion time
 			}
 			_TemperatureInCelsius = (float)raw / 16.0;
-			Serial.print("  Temperature = ");
+			Serial.print(F("  Temperature = "));
 			Serial.print(_TemperatureInCelsius);
-			Serial.println(" Celsius.");
+			Serial.println(F(" Celsius."));
 			_NextPossibleActivity = currentSeconds + _UpdateIntervall + 1;
 			return true;
 		}
@@ -793,7 +793,17 @@ void PwmChannel::proceedCycle(time_t currentSecOfDay, time_t currentMilliOfSec){
 				vx = currentTarget.Value;
 			}
 		}
-		_PwmTarget = (uint16_t)(((float)PWM_MAX * vx) / 100.0);
+		// The testmode is integrated here because we only overwrite the current _PwmTargetValue.
+		// Also this makes sense, because we do not influence the complete process of calculation and setting of the light values.
+		if (TestMode) {
+			_PwmTarget = (uint16_t)(((float)PWM_MAX * TestValue) / 100.0);
+			if (TestModeSetTime < (_aqc->CurrentSecOfDay - 60) || TestModeSetTime > _aqc->CurrentSecOfDay) {
+				TestMode = false;
+			}
+		}
+		else {
+			_PwmTarget = (uint16_t)(((float)PWM_MAX * vx) / 100.0);
+		}
 		
 		// Try to fade to the target value and do not jump
 		// If you wish to jump, then set PMW_STEP bigger than the pwm precicion
@@ -835,357 +845,3 @@ void PwmChannel::proceedCycle(time_t currentSecOfDay, time_t currentMilliOfSec){
  }
 }
 
-#if defined(USE_WEBSERVER)
-void handleRoot() {
-	File myFile = SD.open("index.htm");
-	if (myFile) {
-
-		_Server.setContentLength(CONTENT_LENGTH_UNKNOWN);
-		_Server.send(200, "text/html", "");
-		while (myFile.available()) {
-			String sLine = myFile.readStringUntil(10);
-			sLine.replace("##FW_VERSION##", AQC_VERSION);
-#if defined(USE_DS18B20_TEMP_SENSOR)
-			sLine.replace("##TEMP##", "Aktuelle Wassertemperatur " + String(_aqc->_Temperature._TemperatureInCelsius) + " &deg;C<br/>");
-#else
-			sLine.replace("##TEMP##", "");
-#endif
-			_Server.sendContent(sLine);
-		}
-
-		// close the file:
-		myFile.close();
-	}
-	else {
-		// if the file didn't open, print an error:
-		Serial.println("error opening editled.htm");
-	}
-}
-
-void handleEditWlanGET(){
-	File myFile = SD.open("wlan.htm");
-	if (myFile) {
-
-		_Server.setContentLength(CONTENT_LENGTH_UNKNOWN);
-		_Server.send(200, "text/html", "");
-		while (myFile.available()){
-			String sLine = myFile.readStringUntil(10);
-			if (sLine.indexOf("##WLAN_CONFIG##") != -1){
-				String sContent = "<tr><td>SSID</td><td><input type=\"text\" name=\"ssid\" value=\"" + _aqc->_WlanConfig.SSID + "\"/></td></tr>\n";
-				sContent += "<tr><td>Passwort</td><td><input type=\"password\" name=\"password\" value=\"\"/></td></tr>\n";
-				sContent += "<tr><td>IP-Adresse</td><td><input type=\"text\" name=\"ip\" value=\"" + (_aqc->_WlanConfig.ManualIP ? _aqc->_WlanConfig.IP.toString() : "") + "\"/></td></tr>\n";
-				sContent += "<tr><td>Gateway</td><td><input type=\"text\" name=\"gateway\" value=\"" + (_aqc->_WlanConfig.ManualIP ? _aqc->_WlanConfig.Gateway.toString() : "") + "\"/></td></tr>\n";
-				_Server.sendContent(sContent);
-			}
-			else{
-				sLine.replace("##FW_VERSION##", AQC_VERSION);
-				_Server.sendContent(sLine);
-			}
-		}
-
-		// close the file:
-		myFile.close();
-	}
-	else {
-		// if the file didn't open, print an error:
-		Serial.println("error opening editled.htm");
-	}
-}
-
-void handleEditWlanPOST(){
-	String sSSID = _Server.arg("ssid");
-	Serial.println(sSSID);
-	String sPw = _Server.arg("password");
-	Serial.println(sPw);
-	String sIP = _Server.arg("ip");
-	Serial.println(sIP);
-	String sGateway = _Server.arg("gateway");
-	Serial.println(sGateway);
-	if (sSSID.length() > 0){
-		_aqc->_WlanConfig.SSID = sSSID;
-		if (sPw != ""){
-			_aqc->_WlanConfig.PW = sPw;
-		}
-		_aqc->_WlanConfig.IP = _aqc->extractIPAddress(sIP);
-		if (sIP.length() > 6){
-			_aqc->_WlanConfig.IP = _aqc->extractIPAddress(sIP);
-			_aqc->_WlanConfig.ManualIP = true;
-		}
-		else{
-			_aqc->_WlanConfig.IP = IPAddress((uint32_t)0);
-			_aqc->_WlanConfig.ManualIP = false;
-		}
-
-		if (sGateway.length() > 6){
-			_aqc->_WlanConfig.Gateway = _aqc->extractIPAddress(sGateway);
-		}
-		else{
-			_aqc->_WlanConfig.Gateway = IPAddress((uint32_t)0);
-		}
-		_aqc->writeWlanConfig();
-	}
-	handleEditWlanGET();
-}
-
-void handleEditLedPOST(){
-	// Save button in edit led channel was pressed
-	String channel = _Server.arg("channel");
-	uint8_t iChannel = atoi(channel.c_str());
-
-	Target targets[MAX_TARGET_COUNT_PER_CHANNEL];
-	uint8_t targetCount = 0;
-	for (uint8_t i = 0; i < _Server.args(); i++){
-		String sArg = _Server.argName(i);
-		if (sArg.startsWith("tt")){
-			// we have a target time value
-			int8_t targetNumber = sArg.substring(2).toInt();
-			// get the time of the target
-			String sTargetTime = _Server.arg(sArg);
-			// if it is a valid target time
-			if (sTargetTime.length() > 0){
-				int8_t index = sTargetTime.indexOf(':');
-				long targetTime = 0;
-				if (index != -1){
-					int8_t hour = sTargetTime.substring(0, index).toInt();
-					int8_t min = sTargetTime.substring(index + 1).toInt();
-					targetTime = (60 * 60 * hour) + (60 * min);
-				}
-				else{
-					targetTime = sTargetTime.toInt();
-				}
-				if (targetTime > (60 * 60 * 24)){
-					// the time is longer than a day, so put it to the last second in a day
-					targetTime = 3600 * 24;
-				}
-
-				// now get the appropriate value for the target
-				String sValueArgName = "tv";
-				sValueArgName += sArg.substring(2);
-				uint8_t targetValue = _Server.arg(sValueArgName).toInt();
-
-				// correct possible wrong inputs
-				if (targetValue > 100){
-					targetValue = 100;
-				}
-				targets[targetCount].Time = targetTime;
-				targets[targetCount].Value = targetValue;
-				targetCount++;
-			}
-			else{
-				/*Serial.print("cancel input ");
-				Serial.print(sArg);
-				Serial.print(" time value ");
-				Serial.println(sTargetTime);*/
-			}
-		}
-	}
-	Serial.print("Removing old targets...");
-	for (uint8_t t = 0; t < MAX_TARGET_COUNT_PER_CHANNEL; t++){
-		_aqc->_PwmChannels[iChannel].removeTargetAt(0);
-	}
-	Serial.println(" Done.");
-	Serial.print("Inserting new targets... ");
-	for (uint8_t t = 0; t < targetCount; t++){
-		/*Serial.print("Add target time ");
-		Serial.print(targets[t].Time);
-		Serial.print(" value ");
-		Serial.println(targets[t].Value);*/
-		_aqc->_PwmChannels[iChannel].addTarget(targets[t]);
-	}
-	Serial.println(" Done.");
-	Serial.print("Storing new led config to SD card...");
-	_aqc->writeLedConfig(iChannel);
-	Serial.println(" Done.");
-	_aqc->_IsFirstCycle = true;
-
-	handleEditLedGET();
-}
-
-void handleEditLedGET(){
-	File myFile = SD.open("editled.htm");
-	if (myFile) {
-		String channel = _Server.arg("channel");
-		uint8_t iChannel = atoi(channel.c_str());
-
-		_Server.setContentLength(CONTENT_LENGTH_UNKNOWN);
-		_Server.send(200, "text/html", "");
-		while (myFile.available()){
-			String sLine = myFile.readStringUntil('\n');
-			if (sLine.indexOf("##CONTENT##") != -1){
-				for (uint8_t i = 0; i < MAX_TARGET_COUNT_PER_CHANNEL; i++){
-					String sContent = "";
-					if (i < _aqc->_PwmChannels[iChannel].TargetCount){
-						String sHour, sMinute;
-						uint8_t iHour = hour(_aqc->_PwmChannels[iChannel].Targets[i].Time);
-						uint8_t iMinute = minute(_aqc->_PwmChannels[iChannel].Targets[i].Time);
-						sContent += "<tr><td>";
-						sContent += i + 1;
-						sContent += "</td><td> <input type = \"text\" value=\"";
-						sContent += String((iHour > 9 ? "" : "0")) + String(iHour) + ":" + String((iMinute > 9 ? "" : "0")) + String(iMinute);
-						sContent += "\" name=\"tt";
-						sContent += (i > 9 ? "" : "0") + String(i);
-						sContent += "\"/></td>";
-						_Server.sendContent(sContent);
-						sContent = "<td> <input type = \"text\" value=\"";
-						sContent += String(_aqc->_PwmChannels[iChannel].Targets[i].Value);
-						sContent += "\" name=\"tv";
-						sContent += (i > 9 ? "" : "0") + String(i);
-						sContent += "\"/> </td></tr>\n";
-						_Server.sendContent(sContent);
-					}
-					else{
-						sContent += "<tr><td>";
-						sContent += i + 1;
-						sContent += "</td><td> <input type = \"text\" value=\"";
-						sContent += "";
-						sContent += "\" name=\"tt";
-						sContent += (i > 9 ? "" : "0") + String(i);
-						sContent += "\"/></td><td><input type=\"text\" value=\"";
-						sContent += "";
-						sContent += "\" name=\"tv";
-						sContent += (i > 9 ? "" : "0") + String(i);
-						sContent += "\"/> </td></tr>\n";
-						_Server.sendContent(sContent);
-					}
-				}
-			}
-			else{
-				sLine.replace("##CHANNEL##", String(iChannel + 1));
-				sLine.replace("##FW_VERSION##", AQC_VERSION);
-				_Server.sendContent(sLine);
-			}
-		}
-
-		// close the file:
-		myFile.close();
-	}
-	else {
-		// if the file didn't open, print an error:
-		Serial.println("error opening editled.htm");
-	}
-}
-
-void handleNotFound(){
-	String message = "File Not Found\n\n";
-	message += "URI: ";
-	message += _Server.uri();
-	message += "\nMethod: ";
-	message += (_Server.method() == HTTP_GET) ? "GET" : "POST";
-	message += "\nArguments: ";
-	message += _Server.args();
-	message += "\n";
-	for (uint8_t i = 0; i < _Server.args(); i++){
-		message += " " + _Server.argName(i) + ": " + _Server.arg(i) + "\n";
-	}
-	_Server.send(404, "text/plain", message);
-}
-
-
-void handleTestModeGET(){
-	// TODO
-}
-
-void handleTestModePOST(){
-	// TODO
-}
-
-void handleTimeGET(){
-	File myFile = SD.open("time.htm");
-	if (myFile) {
-
-		_Server.setContentLength(CONTENT_LENGTH_UNKNOWN);
-		_Server.send(200, "text/html", "");
-		while (myFile.available()){
-			String sLine = myFile.readStringUntil(10);
-			if (sLine.indexOf("##TIME_CONFIG##") != -1){
-				String sContent = "<tr><td>Datum</td><td><input type=\"text\" name=\"date\" value=\"";
-				sContent += (day() <= 9 ? "0" : "") + String(day()) + "." + (month() <= 9 ? "0" : "") + String(month()) + "." + String(year());
-				sContent += "\"/></td></tr>";
-
-				sContent += "<tr><td>Zeit</td><td><input type=\"text\" name=\"time\" value=\"";
-				sContent += (hour() <= 9 ? "0" : "") + String(hour()) + ":" + (minute() <= 9 ? "0" : "") + String(minute()) + ":" + (second() <= 9 ? "0" : "") + String(second());
-				sContent += "\"/></td></tr>";
-				_Server.sendContent(sContent);
-			}
-			else{
-				sLine.replace("##FW_VERSION##", AQC_VERSION);
-				_Server.sendContent(sLine);
-			}
-		}
-
-		// close the file:
-		myFile.close();
-	}
-	else {
-		// if the file didn't open, print an error:
-		Serial.println("error opening editled.htm");
-	}
-}
-
-void handleTimePOST(){
-	String sDate = _Server.arg("date");
-	String sTime = _Server.arg("time");
-	uint16_t value;
-	uint8_t pos;
-	tmElements_t newTime;
-	// Get the Day
-	pos = sDate.indexOf(".");
-	if (pos > 0){
-		newTime.Day = sDate.substring(0, pos).toInt();
-		sDate = sDate.substring(pos + 1);
-		// Get the month
-		pos = sDate.indexOf(".");
-		if (pos > 0){
-			newTime.Month = sDate.substring(0, pos).toInt();
-			// Get the year
-			sDate = sDate.substring(pos + 1);
-			value = sDate.toInt();
-			if (value > 1000){
-				newTime.Year = CalendarYrToTm(value);
-			}
-			else{
-				newTime.Year = y2kYearToTm(value);
-			}
-			// Now get the hour
-			pos = sTime.indexOf(":");
-			if (pos > 0){
-				newTime.Hour = sTime.substring(0, pos).toInt();
-				sTime = sTime.substring(pos + 1);
-				// Get the minute
-				pos = sTime.indexOf(":");
-				if (pos > 0){
-					newTime.Minute = sTime.substring(0, pos).toInt();
-					sTime = sTime.substring(pos + 1);
-					// finally get the second if
-					newTime.Second = sTime.toInt();
-				}
-				else{
-					newTime.Minute = sTime.toInt();
-				}
-				time_t t = makeTime(newTime);
-				// Now set the time to RTC and to the system
-				RTC.set(t);
-				setTime(t);
-			}
-		}
-	}
-	handleTimeGET();
-}
-
-void handleStyleGET(){
-	File myFile = SD.open("css/style.css");
-	if (myFile) {
-		if (_Server.streamFile(myFile, "text/css") != myFile.size()) {
-			Serial.println("Sent less data than expected!");
-		}
-
-		// close the file:
-		myFile.close();
-	}
-	else {
-		// if the file didn't open, print an error:
-		Serial.println("error opening index.htm");
-	}
-}
-
-#endif

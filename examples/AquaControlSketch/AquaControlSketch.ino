@@ -25,10 +25,10 @@ void loop() {
 		Serial.println(sInput);
 		switch (sInput[0]){
 		case 'm':
-			Serial.println("Switching to manual mode");
+			Serial.println(F("Switching to manual mode"));
 			break;
 		case 'a':
-			Serial.println("Switching to automatic mode");
+			Serial.println(F("Switching to automatic mode"));
 			break;
 		default:
 			break;

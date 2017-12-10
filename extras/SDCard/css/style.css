@@ -12,13 +12,13 @@ h1, h2, h3, h4{
 
 input, button{
 	display:inline-block;
-	padding:10px;
+	padding:8px;
 	min-width:50px;
 	min-height:20px;
 	background-color:#66AFFF;
 	border:solid 1px #ffffff;
 	font-weight:bold;
-	font-size:16pt;
+	font-size:14pt;
 	color:#ffffff;
 }
 
@@ -54,4 +54,8 @@ th{
 	padding:5px;
 	vertical-align:top;
 	width:50px;
+}
+
+.inline_button{
+	display:inline-block;
 }
